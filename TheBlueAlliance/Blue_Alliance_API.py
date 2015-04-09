@@ -38,13 +38,26 @@ class APIBase(object):
         return response
 
     def save_database(self, file_path):
+        """Saves the current data to disk
+
+        Keyword Arguments:
+        file_path (str) -- Path were youo wish to save the file, use an extension like .db"""
+
         dump(self, file_path, True)
 
 
 class Event(APIBase):
+
     EVENT_KEY = 'yyyyaaaa'
 
     def __init__(self, name, program_name, program_version, event_key):
+        """Primary class for handling Event data
+
+        name (str) -- name to identify you
+        program_name (str) -- name or description of your program
+        program_version (str) -- Version of your program
+        event_key (str) -- key to identify your event,
+            you can get keys for all of the events by running TheBlueAlliance.get_events_and_codes()"""
         super(Event, self).__init__(name, program_name, program_version)
         self.EVENT_KEY = event_key
 
@@ -176,6 +189,7 @@ class Event(APIBase):
             return False
 
     def update_data(self):
+        """Update all of the Event's data from TheBlueAlliance, requires internet connection."""
         self.qualification_matches = []
         self.quarter_final_matches = []
         self.semi_final_matches = []
@@ -197,6 +211,10 @@ class Event(APIBase):
         self.__init_awards()
 
     def change_event(self, event_key):
+        """Change event from one to another
+
+        Keyword arguments:
+        event_key (str) -- The event key of new event"""
         self.EVENT_KEY = event_key
         self.update_data()
 
@@ -209,6 +227,17 @@ class Event(APIBase):
         return match_sum
 
     def get_matches(self, team_number='all', match_type='qm'):
+        """Retrieve matches from the event
+
+        Keyword arguments:
+        team_number -- if an int, retrieves matches played by that team.
+                        If 'all', then it retrieves all matches (default 'all')
+        match_type (str) -- from which type of matches to choose from: 'qm', 'qf', 'sf', 'f'. (default 'qm')
+
+        Returns:
+        numpy array -- [type, match_number, Red_alliance, Blue_alliance, Red_score, Blue_score, Winner, Match_ID]
+                                    Two dimensional if team number was 'all'
+        """
         if team_number is 'all':
             if match_type is 'qm':
                 return self.qualification_matches
@@ -235,6 +264,17 @@ class Event(APIBase):
             return team_matches
 
     def get_team(self, team_number='all'):
+        """Retrieve infromation about teams at the event
+
+        Keyword arguments:
+        team_number -- if an int, retrieves information on that team.
+                        If 'all', then it retrieves all teams (default 'all')
+
+        Returns: [Team_Number, Team_Name, City, State, Country, Creation_Year]
+                                    Two dimensional if team number was 'all'
+
+        """
+
         if team_number is 'all':
             return self.teams
 
@@ -244,6 +284,17 @@ class Event(APIBase):
         return self.teams[self.teams[:, 0] == team_number][0]
 
     def get_rankings(self, team_number='all'):
+        """Retrieves ranking from the event
+
+        Keyword arguments:
+        team_number -- if an int, retrieves rankings of that team.
+                        If 'all', then it retrieves all teams (default 'all')
+
+        Returns:
+        numpy array -- [Rank, Team_Number, Qual_Average, Auto, Container, Coopertition, Litter, Tote, Matched_Played]
+                                    Two dimensional if team number was 'all'
+        """
+
         # ['Rank', 'Team', 'Qual Avg', 'Auto', 'Container', 'Coopertition', 'Litter', 'Tote', 'Played']
         if team_number is 'all':
             return self.rankings
@@ -257,6 +308,16 @@ class Event(APIBase):
         return []
 
     def get_statistics(self, team_number='all'):
+        """Retrieves statistics about teams at the event
+
+        Keyword arguments:
+        team_number -- if an int, retrieves statistics of that team.
+                        If 'all', then it retrieves all teams (default 'all')
+
+        Returns:
+        numpy array -- [Team_Number, OPR, DPR, CCWM]
+                                    Two dimensional if team number was 'all'
+        """
         if team_number is 'all':
             return self.stats
 
@@ -269,6 +330,16 @@ class Event(APIBase):
         return np_array([team_number, 0, 0, 0])
 
     def get_alliance(self, number='all'):
+        """Retrieves ranking from the event
+
+        Keyword arguments:
+        number -- if an int, the retrieves that ranked alliance.
+                        If 'all', then it retrieves all alliances (default 'all')
+
+        Returns: ]
+        numpy array -- [Rank, First Team, Second Team, Third Team]
+                                    Two dimensional if team number was 'all'
+        """
         if number is 'all':
             return self.alliances
 
@@ -279,13 +350,29 @@ class Event(APIBase):
         return self.alliances[number - 1]
 
     def get_event_info(self):
+        """Retrieves info about the current Event
+
+        Returns:
+        numpy array -- [Name, Type, Location]
+        """
         return self.event_info
 
     def get_awards(self):
+        """Retrieves awards given at the regional
+
+        Returns:
+        2d numpy array -- [[Award, Winner, Associated_Team]]"""
         return self.awards
 
 
 def get_events_and_codes(name='', program_name='', program_version='', year=2015):
+    """Function to provide with Event names and codes
+
+    name (str) -- name to identify you
+    program_name (str) -- name or description of your program
+    program_version (str) -- Version of your program
+    year (int) -- Year the event took place in"""
+
     year = str(year)
     request = REQUEST.Request('http://www.thebluealliance.com/api/v2/events/%s' % year)
     request.add_header('X-TBA-App-Id', '%s:%s:%s' % (name, program_name, program_version))
@@ -299,4 +386,8 @@ def get_events_and_codes(name='', program_name='', program_version='', year=2015
 
 
 def load_database(path):
+    """Load an Event object from a path
+
+    Keyword Arguments:
+    path (str) -- Path to saved database file"""
     return load(path)

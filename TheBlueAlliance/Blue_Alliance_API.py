@@ -23,7 +23,7 @@ from joblib import dump, load
 
 
 
-class APIBase:
+class APIBase(object):
     URL = 'http://www.thebluealliance.com/api/v2/'
     HEADER = 'X-TBA-App-Id'
     VALUE = 'name:program:version'

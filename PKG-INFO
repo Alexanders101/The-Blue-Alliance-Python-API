@@ -1,0 +1,15 @@
+Metadata-Version: 1.1
+Name: TheBlueAlliance
+Version: 1.0
+Author: Alex Shmakov
+Author-email: Alexanders101 at gmail com
+Home-page: https://github.com/Alexanders101/The-Blue-Alliance-Python-API
+Download-url: UNKNOWN
+Summary: TheBlueAlliance.com python API
+License: UNKNOWN
+Description: Python bindings for TheBlueAlliance.com's api v2. Currently Events are supported, with Team support coming soon.
+Keywords: Blue Alliance TheBlueAlliance
+Platform: UNKNOWN
+Requires: joblib
+Requires: numpy
+

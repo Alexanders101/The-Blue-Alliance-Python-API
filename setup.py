@@ -7,7 +7,7 @@ setup(name='TheBlueAlliance',
       description='TheBlueAlliance.com python API',
       author='Alex Shmakov',
       author_email='Alexanders101@gmail.com',
-      url='https://github.com/Alexanders101/PyAI',
+      url='https://github.com/Alexanders101/The-Blue-Alliance-Python-API',
       packages=['TheBlueAlliance'],
       requires=['numpy', 'joblib']
       )

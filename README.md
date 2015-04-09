@@ -7,6 +7,10 @@ and is compatible with every operating system.
 - Numpy
 - Joblib
 
+## Install Instructions:
+1. sudo pip (or pip3) install TheBlueAlliance
+
+
 ## Build instructions (Linux)
 1. `sudo pip (or pip3) install -r requirements.txt`
 2. `python (or python3) setup.py build`

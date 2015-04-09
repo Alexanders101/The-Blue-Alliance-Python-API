@@ -1,7 +1,6 @@
 __author__ = 'alex'
 
 from sys import version_info
-
 if version_info[0] == 2: # Python 2.x
     import urllib2 as REQUEST
 elif version_info[0] == 3: # Python 3.x

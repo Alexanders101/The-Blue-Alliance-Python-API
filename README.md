@@ -8,8 +8,18 @@ and is compatible with every operating system.
 - Joblib
 
 ## Install Instructions:
-1. sudo pip (or pip3) install TheBlueAlliance
+1. `sudo pip (or pip3) install TheBlueAlliance`
 
+Example Usage:
+
+  ```
+  from TheBlueAlliance import *
+  
+  event_code = get_events_and_codes(2015, 'Silicon Valley')[1]
+  event = Event('github_user', 'test', '1.0', event_code)
+  
+  event.get_event_info()
+  ```
 
 ## Build instructions (Linux)
 1. `sudo pip (or pip3) install -r requirements.txt`

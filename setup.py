@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='TheBlueAlliance',
-      version='1.0',
+      version='1.02',
       description='TheBlueAlliance.com python API',
       author='Alex Shmakov',
       author_email='Alexanders101@gmail.com',

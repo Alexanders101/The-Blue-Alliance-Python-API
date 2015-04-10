@@ -365,24 +365,31 @@ class Event(APIBase):
         return self.awards
 
 
-def get_events_and_codes(name='', program_name='', program_version='', year=2015):
+def get_events_and_codes(year=2015, search_term = 'all'):
     """Function to provide with Event names and codes
-
-    name (str) -- name to identify you
-    program_name (str) -- name or description of your program
-    program_version (str) -- Version of your program
-    year (int) -- Year the event took place in"""
+    year (int) -- Year the event took place in
+    search_term (str) -- narrow down list of events by searching for your event name ex. 'Silicon Valley' (default 'all') """
 
     year = str(year)
     request = REQUEST.Request('http://www.thebluealliance.com/api/v2/events/%s' % year)
-    request.add_header('X-TBA-App-Id', '%s:%s:%s' % (name, program_name, program_version))
+    request.add_header('X-TBA-App-Id', '%s:%s:%s' % ('event_getter', 'blue_alliance_python_api', '1.1'))
     response = REQUEST.urlopen(request)
     response = json.loads(response.read().decode("utf-8"))
 
-    events = np_array([[event['name'], event['key']] for event in response])
+    events = np_array([[event['short_name'], event['key']] for event in response])
     ind = np.lexsort((events[:, 1], events[:, 0]))
 
-    return events[ind]
+    events = events[ind]
+
+    if search_term is 'all':
+        return events
+    else:
+        curr = events[events[:, 0] == search_term]
+        if len(curr) is 0:
+            print('no such event found, remember to capitalize the first letter')
+            return
+        return curr[0]
+
 
 
 def load_database(path):
